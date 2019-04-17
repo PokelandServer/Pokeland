@@ -5,9 +5,27 @@
 /eslint-cache
 /server/chat-plugins/private.js
 /server/chat-plugins/*-private.js
+/server/chat-plugins/achievements.js
+/server/chat-plugins/auction.js
+/server/chat-plugins/auctions.js
+/server/chat-plugins/clans.js
+/server/chat-plugins/command-tests.js
+/server/chat-plugins/connectfour.js
+/server/chat-plugins/controlpanel.js
+/server/chat-plugins/economy.js
+/server/chat-plugins/friendlist.js
+/server/chat-plugins/loto.js
+/server/chat-plugins/news.js
+/server/chat-plugins/permaban.js
+/server/chat-plugins/profile.js
+/server/chat-plugins/ss.js
+/server/chat-plugins/staffvie.js
+/server/chat-plugins/testings.js
 npm-debug.log
 .eslintcache
 package-lock.json
+github.js
+
 
 # Typescript build artifacts
 .*-dist/
