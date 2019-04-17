@@ -1,21 +1,20 @@
 'use strict';
 
-/** @type {typeof import('../../lib/fs').FS} */
-const FS = require(/** @type {any} */('../../.lib-dist/fs')).FS;
+const fs = require('fs');
+const path = require('path');
 
-const ROOMFAQ_FILE = 'config/chat-plugins/faqs.json';
+const ROOMFAQ_FILE = path.resolve(__dirname, '../config/chat-plugins/faqs.json');
 
-/** @type {{[k: string]: {[k: string]: string}}} */
 let roomFaqs = {};
 try {
-	roomFaqs = require(`../../${ROOMFAQ_FILE}`);
+	roomFaqs = require(ROOMFAQ_FILE);
 } catch (e) {
 	if (e.code !== 'MODULE_NOT_FOUND' && e.code !== 'ENOENT') throw e;
 }
 if (!roomFaqs || typeof roomFaqs !== 'object') roomFaqs = {};
 
 function saveRoomFaqs() {
-	FS(ROOMFAQ_FILE).writeUpdate(() => JSON.stringify(roomFaqs));
+	fs.writeFile(ROOMFAQ_FILE, JSON.stringify(roomFaqs), () => {});
 }
 
 /**
@@ -32,24 +31,22 @@ function getAlias(roomid, key) {
 	return false;
 }
 
+/** @typedef {(this: CommandContext, target: string, room: ChatRoom, user: User, connection: Connection, cmd: string, message: string) => (void)} ChatHandler */
+/** @typedef {{[k: string]: ChatHandler | string | true | string[] | ChatCommands}} ChatCommands */
+
 /** @type {ChatCommands} */
 const commands = {
-	addfaq(target, room, user, connection) {
+	addfaq: function (target, room, user) {
+		if (!this.canTalk()) return this.errorReply("You cannot do this while unable to talk.");
 		if (!this.can('declare', null, room)) return false;
 		if (!room.chatRoomData) return this.errorReply("This command is unavailable in temporary rooms.");
-		if (!target) return this.parse('/help roomfaq');
-
-		target = target.trim();
-		let input = Chat.filter(this, target, user, room, connection);
-		if (target !== input) return this.errorReply("You are not allowed to use fitered words in roomfaq entries.");
-		let [topic, ...rest] = input.split(',');
+		let [topic, ...rest] = target.split(',');
 
 		topic = toId(topic);
 		if (!(topic && rest.length)) return this.parse('/help roomfaq');
 		let text = rest.join(',').trim();
-		let filteredText = text.replace(/\[\[(?:([^<]+)\s<[^>]+>|([^\]]+))\]\]/g, (match, $1, $2) => $1 || $2);
 		if (topic.length > 25) return this.errorReply("FAQ topics should not exceed 25 characters.");
-		if (filteredText.length > 500) return this.errorReply("FAQ entries should not exceed 500 characters.");
+		if (text.length > 500) return this.errorReply("FAQ entries should not exceed 500 characters.");
 
 		text = text.replace(/^>/, '&gt;');
 
@@ -60,7 +57,7 @@ const commands = {
 		this.privateModAction(`(${user.name} added a FAQ for '${topic}')`);
 		this.modlog('RFAQ', null, `added '${topic}'`);
 	},
-	removefaq(target, room, user) {
+	removefaq: function (target, room, user) {
 		if (!this.canTalk()) return this.errorReply("You cannot do this while unable to talk.");
 		if (!this.can('declare', null, room)) return false;
 		if (!room.chatRoomData) return this.errorReply("This command is unavailable in temporary rooms.");
@@ -75,7 +72,7 @@ const commands = {
 		this.privateModAction(`(${user.name} removed the FAQ for '${topic}')`);
 		this.modlog('ROOMFAQ', null, `removed ${topic}`);
 	},
-	addalias(target, room, user) {
+	addalias: function (target, room, user) {
 		if (!this.canTalk()) return this.errorReply("You cannot do this while unable to talk.");
 		if (!this.can('declare', null, room)) return false;
 		if (!room.chatRoomData) return this.errorReply("This command is unavailable in temporary rooms.");
@@ -92,7 +89,7 @@ const commands = {
 		this.modlog('ROOMFAQ', null, `alias for '${topic}' - ${alias}`);
 	},
 	rfaq: 'roomfaq',
-	roomfaq(target, room, user) {
+	roomfaq: function (target, room, user) {
 		if (!roomFaqs[room.id]) return this.errorReply("This room has no FAQ topics.");
 		let topic = toId(target);
 		if (topic === 'constructor') return false;

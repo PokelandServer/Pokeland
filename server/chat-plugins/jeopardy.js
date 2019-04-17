@@ -507,7 +507,7 @@ exports.commands = {
 	jp: 'jeopardy',
 	jeopardy: {
 		off: 'disable',
-		disable(target, room, user) {
+		disable: function (target, room, user) {
 			if (!this.can('gamemanagement', null, room)) return;
 			if (room.jeopDisabled) {
 				return this.errorReply("Jeopardy is already disabled in this room.");
@@ -521,7 +521,7 @@ exports.commands = {
 		},
 
 		on: 'enable',
-		enable(target, room, user) {
+		enable: function (target, room, user) {
 			if (!this.can('gamemanagement', null, room)) return;
 			if (!room.jeopDisabled) {
 				return this.errorReply("Jeopardy is already enabled in this room.");
@@ -534,12 +534,12 @@ exports.commands = {
 			return this.sendReply("Jeopardy has been enabled for this room.");
 		},
 
-		help(target, room, user) {
+		help: function (target, room, user) {
 			return this.parse("/help jeopardy");
 		},
 
 		create: 'new',
-		new(target, room, user) {
+		new: function (target, room, user) {
 			if (room.game) return this.errorReply(`There is already a game of ${room.game.title} in progress in this room.`);
 			if (!this.can('minigame', null, room)) return;
 			let params = target.split(",");
@@ -552,7 +552,7 @@ exports.commands = {
 			this.modlog('JEOPARDY');
 		},
 
-		categories(target, room, user) {
+		categories: function (target, room, user) {
 			if (!room.game || room.game.gameid !== 'jeopardy') return this.errorReply("There is no game of Jeopardy going on in this room.");
 			if (user.userid !== room.game.host.userid) return this.errorReply("This command can only be used by the host.");
 			let params = target.split(",");
@@ -561,7 +561,7 @@ exports.commands = {
 			if (reply) this.errorReply(reply);
 		},
 
-		category(target, room, user) {
+		category: function (target, room, user) {
 			if (!room.game || room.game.gameid !== 'jeopardy') return this.errorReply("There is no game of Jeopardy going on in this room.");
 			if (user.userid !== room.game.host.userid) return this.errorReply("This command can only be used by the host.");
 			let params = target.split(",");
@@ -576,31 +576,31 @@ exports.commands = {
 			room.game.setCategory((categoryNumber === "final" ? categoryNumber : categoryNumber - 1), params[1]);
 		},
 
-		select(target, room, user) {
+		select: function (target, room, user) {
 			if (!room.game || room.game.gameid !== 'jeopardy') return this.errorReply("There is no game of Jeopardy going on in this room.");
 			let reply = room.game.select(target, user);
 			if (reply) this.errorReply(reply);
 		},
 
-		buzz(target, room, user) {
+		buzz: function (target, room, user) {
 			if (!room.game || room.game.gameid !== 'jeopardy') return this.errorReply("There is no game of Jeopardy going on in this room.");
 			let reply = room.game.buzz(user);
 			if (reply) this.errorReply(reply);
 		},
 
-		wager(target, room, user) {
+		wager: function (target, room, user) {
 			if (!room.game || room.game.gameid !== 'jeopardy') return this.errorReply("There is no game of Jeopardy going on in this room.");
 			let reply = room.game.wager(target, user);
 			if (reply) this.errorReply(reply);
 		},
 
-		answer(target, room, user) {
+		answer: function (target, room, user) {
 			if (!room.game || room.game.gameid !== 'jeopardy') return this.errorReply("There is no game of Jeopardy going on in this room.");
 			let reply = room.game.answer(target, user);
 			if (reply) this.errorReply(reply);
 		},
 
-		import(target, room, user) {
+		import: function (target, room, user) {
 			if (!target) return this.errorReply("You must specify at least one question");
 			if (!room.game || room.game.gameid !== 'jeopardy') return this.errorReply("There is no game of Jeopardy going on in this room.");
 			if (user.userid !== room.game.host.userid) return this.errorReply("This command can only be used by the host.");
@@ -637,7 +637,7 @@ exports.commands = {
 		},
 
 		dailydouble: 'dd',
-		dd(target, room, user) {
+		dd: function (target, room, user) {
 			if (!room.game || room.game.gameid !== 'jeopardy') return this.errorReply("There is no game of Jeopardy going on in this room.");
 			if (user.userid !== room.game.host.userid) return this.errorReply("This command can only be used by the host.");
 			let params = target.split(",");
@@ -655,7 +655,7 @@ exports.commands = {
 		},
 
 		dailydoublehelp: [`/jeopardy dailydouble [category number], [question number] - Set a question to be a daily double.`],
-		view(target, room, user) {
+		view: function (target, room, user) {
 			if (!room.game || room.game.gameid !== 'jeopardy') return this.errorReply("There is no game of Jeopardy going on in this room.");
 			if (user.userid !== room.game.host.userid) return this.errorReply("This command can only be used by the host.");
 			let params = target.split(",");
@@ -668,7 +668,7 @@ exports.commands = {
 		},
 
 		addplayer: 'adduser',
-		adduser(target, room, user) {
+		adduser: function (target, room, user) {
 			if (!room.game || room.game.gameid !== 'jeopardy') return this.errorReply("There is no game of Jeopardy going on in this room.");
 			if (user.userid !== room.game.host.userid) return this.errorReply("This command can only be used by the host.");
 			let targetUser = Users.get(target);
@@ -682,21 +682,21 @@ exports.commands = {
 		},
 
 		incorrect: 'correct',
-		correct(target, room, user, connection, cmd) {
+		correct: function (target, room, user, connection, cmd) {
 			if (!room.game || room.game.gameid !== 'jeopardy') return this.errorReply("There is no game of Jeopardy going on in this room.");
 			if (user.userid !== room.game.host.userid) return this.errorReply("This command can only be used by the host.");
 			let reply = room.game.mark(cmd === 'correct');
 			if (reply) this.errorReply(reply);
 		},
 
-		start(target, room, user) {
+		start: function (target, room, user) {
 			if (!room.game || room.game.gameid !== 'jeopardy') return this.errorReply("There is no game of Jeopardy going on in this room.");
 			if (user.userid !== room.game.host.userid) return this.errorReply("This command can only be used by the host.");
 			let reply = room.game.start();
 			if (reply) this.errorReply(reply);
 		},
 		removeplayer: 'removeuser',
-		removeuser(target, room, user) {
+		removeuser: function (target, room, user) {
 			if (!room.game || room.game.gameid !== 'jeopardy') return this.errorReply("There is no game of Jeopardy going on in this room.");
 			if (user.userid !== room.game.host.userid) return this.errorReply("This command can only be used by the host.");
 			let targetUser = Users.get(target);
@@ -708,7 +708,7 @@ exports.commands = {
 			}
 		},
 
-		subhost(target, room, user) {
+		subhost: function (target, room, user) {
 			if (!room.game || room.game.gameid !== 'jeopardy') return this.errorReply("There is no game of Jeopardy going on in this room.");
 			if (user.userid !== room.game.host.userid) return this.errorReply("This command can only be used by the host.");
 			let targetUser = Users.get(target);
@@ -717,13 +717,13 @@ exports.commands = {
 			this.sendReply(`${targetUser.name} has subbed in as the host.`);
 		},
 
-		state(target, room, user) {
+		state: function (target, room, user) {
 			if (!room.game || room.game.gameid !== 'jeopardy') return this.errorReply("There is no game of Jeopardy going on in this room.");
 			if (user.userid !== room.game.host.userid) return this.errorReply("This command can only be used by the host.");
 			this.sendReply(`The game is currently in the ${room.game.state} state.`);
 		},
 
-		end(target, room, user) {
+		end: function (target, room, user) {
 			if (!room.game || room.game.gameid !== 'jeopardy') return this.errorReply("There is no game of Jeopardy going on in this room.");
 			if (!this.can('minigame', null, room)) return;
 			room.game.destroy();
@@ -731,13 +731,13 @@ exports.commands = {
 			this.modlog('JEOPARDY END');
 		},
 
-		pass(target, room, user) {
+		pass: function (target, room, user) {
 			if (!room.game || room.game.gameid !== 'jeopardy') return this.errorReply("There is no game of Jeopardy going on in this room.");
 			if (user.userid !== room.game.host.userid) return this.errorReply("This command can only be used by the host.");
 			room.game.nextQuestion();
 		},
 
-		timer(target, room, user) {
+		timer: function (target, room, user) {
 			if (!room.game || room.game.gameid !== 'jeopardy') return this.errorReply("There is no game of Jeopardy going on in this room.");
 			if (user.userid !== room.game.host.userid) return this.errorReply("This command can only be used by the host.");
 			let amount = parseInt(target);
@@ -748,7 +748,7 @@ exports.commands = {
 			this.modlog('JEOPARDY TIMER', null, `${amount} seconds`);
 		},
 
-		finaltimer(target, room, user) {
+		finaltimer: function (target, room, user) {
 			if (!room.game || room.game.gameid !== 'jeopardy') return this.errorReply("There is no game of Jeopardy going on in this room.");
 			if (user.userid !== room.game.host.userid) return this.errorReply("This command can only be used by the host.");
 			let amount = parseInt(target);

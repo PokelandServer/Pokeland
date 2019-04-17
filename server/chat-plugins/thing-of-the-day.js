@@ -172,9 +172,9 @@ class OtdHandler {
 		/** @type {string[]} */
 		const entries = [];
 
-		for (const value of this.nominations.values()) {
+		this.nominations.forEach(value => {
 			entries.push(`<li><b>${value.nomination}</b> <i>(Submitted by ${value.name})</i></li>`);
-		}
+		});
 
 		if (entries.length > 20) {
 			buffer += `<table><tr><td><ul>${entries.slice(0, Math.ceil(entries.length / 2)).join('')}</ul></td><td><ul>${entries.slice(Math.ceil(entries.length / 2)).join('')}</ul></td></tr></table>`;
@@ -199,14 +199,14 @@ class OtdHandler {
 	}
 
 	rollWinner() {
-		let keys = [...this.nominations.keys()];
+		let keys = Array.from(this.nominations.keys());
 		if (!keys.length) return false;
 
 		let winner = this.nominations.get(keys[Math.floor(Math.random() * keys.length)]);
 		if (!winner) return false; // Should never happen but shuts typescript up.
 		this.appendWinner(winner.nomination, winner.name);
 
-		const names = [...this.nominations.values()].map(obj => obj.name);
+		const names = Array.from(this.nominations.values()).map(obj => obj.name);
 
 		let columns = names.length > 27 ? 4 : names.length > 18 ? 3 : names.length > 9 ? 2 : 1;
 		let content = '';

@@ -7,67 +7,90 @@
 'use strict';
 
 const https = require('https');
-const querystring = require('querystring');
 
-const SEARCH_PATH = '/api/v1/Search/List/';
-const DETAILS_PATH = '/api/v1/Articles/Details/';
-
-async function getFandom(site, pathName, search) {
-	const reqOpts = {
-		hostname: `${site}.fandom.com`,
-		method: 'GET',
-		path: `${pathName}?${querystring.stringify(search)}`,
-		headers: {
-			'Content-Type': 'application/json',
-		},
-	};
-
-	const body = await new Promise((resolve, reject) => {
-		https.request(reqOpts, res => {
-			if (!(res.statusCode >= 200 && res.statusCode < 300)) return reject(new Error(`Not found.`));
-			const body = [];
-			res.setEncoding('utf8');
-			res.on('data', chunk => body.push(chunk));
-			res.on('end', () => resolve(body.join('')));
-		}).on('error', reject).setTimeout(5000).end();
+function apiRequest(url, onEnd, onError) {
+	https.get(url, res => {
+		let buffer = '';
+		res.setEncoding('utf8');
+		res.on('data', data => {
+			buffer += data;
+		});
+		res.on('end', () => {
+			onEnd(buffer);
+		});
+	}).on('error', err => {
+		onEnd(err);
 	});
-
-	const json = JSON.parse(body);
-	if (!json) throw new Error(`Malformed data`);
-	if (json.exception) throw new Error(Dex.getString(json.exception.message) || `Not found`);
-	return json;
 }
 
-async function searchFandom(site, query) {
-	const result = await getFandom(site, SEARCH_PATH, {query, limit: 1});
-	if (!Array.isArray(result.items) || !result.items.length) throw new Error(`Malformed data`);
-	if (!result.items[0] || typeof result.items[0] !== 'object') throw new Error(`Malformed data`);
-	return result.items[0];
+function mediawikiSearch(domain, query) {
+	return new Promise(function (resolve, reject) {
+		apiRequest(`https://${domain}/w/api.php?action=query&list=search&format=json&srsearch=${encodeURIComponent(query)}&srwhat=nearmatch`, res => {
+			let result;
+			try {
+				result = JSON.parse(res);
+			} catch (e) {
+				return reject(e);
+			}
+			if (!result) return reject(new Error("Malformed data"));
+			if (!result.query || !result.query.search || !Array.isArray(result.query.search)) return reject(new Error("Malformed data"));
+			if (!result.query.search.length) return reject(new Error("Not found"));
+			if (typeof result.query.search[0] !== 'object') return reject(new Error("Malformed data"));
+
+			return resolve(result.query.search[0]);
+		}, reject);
+	});
 }
 
-async function getCardDetails(site, id) {
-	const result = await getFandom(site, DETAILS_PATH, {ids: id, abstract: 0, width: 80, height: 115});
-	if (typeof result.items !== 'object' || !result.items[id] || typeof result.items[id] !== 'object') {
-		throw new Error(`Malformed data`);
-	}
-	return result.items[id];
+function wikiaSearch(subdomain, query) {
+	return new Promise(function (resolve, reject) {
+		apiRequest(`https://${subdomain}.wikia.com/api/v1/Search/List/?query=${encodeURIComponent(query)}&limit=1`, res => {
+			let result;
+			try {
+				result = JSON.parse(res);
+			} catch (e) {
+				return reject(e);
+			}
+			if (!result) return reject(new Error("Malformed data"));
+			if (result.exception) return reject(new Error(Dex.getString(result.exception.message) || "Not found"));
+			if (!Array.isArray(result.items) || !result.items[0] || typeof result.items[0] !== 'object') return reject(new Error("Malformed data"));
+
+			return resolve(result.items[0]);
+		}, reject);
+	});
+}
+function getCardDetails(subdomain, id) {
+	return new Promise(function (resolve, reject) {
+		apiRequest(`https://${subdomain}.wikia.com/api/v1/Articles/Details?ids=${encodeURIComponent(id)}&abstract=0&width=80&height=115`, res => {
+			let result;
+			try {
+				result = JSON.parse(res);
+			} catch (e) {
+				return reject(e);
+			}
+			if (!result) return reject(new Error("Malformed data"));
+			if (result.exception) return reject(new Error(Dex.getString(result.exception.message) || "Not found"));
+			if (typeof result.items !== 'object' || !result.items[id] || typeof result.items[id] !== 'object') return reject(new Error("Malformed data"));
+
+			return resolve(result.items[id]);
+		}, reject);
+	});
 }
 
 exports.commands = {
 	ygo: 'yugioh',
-	yugioh(target, room, user) {
+	yugioh: function (target, room, user) {
 		if (!this.canBroadcast()) return;
 		if (room.id !== 'tcgtabletop') return this.errorReply("This command can only be used in the TCG & Tabletop room.");
 		let subdomain = 'yugioh';
 		let query = target.trim();
-		if (!query) return this.parse('/help yugioh');
 
-		return searchFandom(subdomain, query).then(data => {
+		wikiaSearch(subdomain, query).then(data => {
 			if (!this.runBroadcast()) return;
 			let entryUrl = Dex.getString(data.url);
 			let entryTitle = Dex.getString(data.title);
 			let id = Dex.getString(data.id);
-			let htmlReply = Chat.html`<strong>Best result for ${query}:</strong><br /><a href="${entryUrl}">${entryTitle}</a>`;
+			let htmlReply = `<strong>Best result for ${Chat.escapeHTML(query)}:</strong><br /><a href="${Chat.escapeHTML(entryUrl)}">${Chat.escapeHTML(entryTitle)}</a>`;
 			if (id) {
 				getCardDetails(subdomain, id).then(card => {
 					let thumb = Dex.getString(card.thumbnail);
@@ -101,5 +124,38 @@ exports.commands = {
 			return room.add(`Error: ${err.message}`).update();
 		});
 	},
-	yugiohhelp: [`/yugioh [query] - Search the Yugioh wiki.`],
+	ptcg: function (target, room, user) {
+		if (!this.canBroadcast()) return;
+		if (room.id !== 'tcgtabletop') return this.errorReply("This command can only be used in the TCG & Tabletop room.");
+		let domain = 'bulbapedia.bulbagarden.net';
+		let query = `${target.trim()} (TCG)`;
+
+		mediawikiSearch(domain, query).then(data => {
+			if (!this.runBroadcast()) return;
+			let snippet = Dex.getString(data.snippet);
+			let page = Dex.getString(data.title);
+			if (snippet.startsWith('#REDIRECT')) {
+				let redir = /\[\[(.+)\]\]/.exec(snippet);
+				if (redir) page = redir[1];
+			}
+			let htmlReply = `<strong>Best result for ${Chat.escapeHTML(target)}:</strong><br /><a href="http://${domain}/wiki/${encodeURIComponent(page)}">${Chat.escapeHTML(page)}</a>`;
+			if (!this.broadcasting) return this.sendReply(`|raw|<div class="infobox">${htmlReply}</div>`);
+			room.addRaw(`<div class="infobox">${htmlReply}</div>`).update();
+		}, err => {
+			if (!this.runBroadcast()) return;
+
+			if (err instanceof SyntaxError || err.message === 'Malformed data') {
+				if (!this.broadcasting) return this.sendReply(`Error: Something went wrong in the request: ${err.message}`);
+				return room.add(`Error: Something went wrong in the request: ${err.message}`).update();
+			} else if (err.message === 'Not found') {
+				if (!this.broadcasting) return this.sendReply('|raw|<div class="infobox">No results found.</div>');
+				return room.addRaw('<div class="infobox">No results found.</div>').update();
+			} else if (err.code === "ENOTFOUND") {
+				if (!this.broadcasting) return this.sendReply("Error connecting to bulbapedia.");
+				return room.add("Error connecting to bulbapedia.").update();
+			}
+			if (!this.broadcasting) return this.sendReply(`Error: ${err.message}`);
+			return room.add(`Error: ${err.message}`).update();
+		});
+	},
 };

@@ -186,7 +186,7 @@ class Giveaway {
 		}
 		text = toId(text);
 		if (mons.size) {
-			for (const [key, value] of mons) {
+			mons.forEach(function (value, key) {
 				let spriteid = value.spriteid;
 				if (value.otherForms) {
 					for (let i = 0; i < value.otherForms.length; i++) {
@@ -218,7 +218,7 @@ class Giveaway {
 					let shiny = (text.includes("shiny") && !text.includes("shinystone") ? '-shiny' : '');
 					output += `<img src="/sprites/xyani${shiny}/${spriteid}.gif">`;
 				}
-			}
+			});
 		}
 		return [monIds, output];
 	}
@@ -929,7 +929,7 @@ let commands = {
 	},
 	count(target, room, user) {
 		if (room.id !== 'wifi') return this.errorReply("This command can only be used in the Wi-Fi room.");
-		target = [...Giveaway.getSprite(target)[0]][0];
+		target = Array.from(Giveaway.getSprite(target)[0])[0];
 		if (!target) return this.errorReply("No mon entered - /giveaway count pokemon.");
 		if (!this.runBroadcast()) return;
 
