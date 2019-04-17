@@ -24,7 +24,7 @@
 npm-debug.log
 .eslintcache
 package-lock.json
-github.js
+/server/github.js
 
 
 # Typescript build artifacts
