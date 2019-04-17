@@ -4,6 +4,12 @@
   "description": "The server for the Pokémon Showdown battle simulator",
   "version": "0.11.2",
   "dependencies": {
+    "autolinker": "^3.0.5",
+    "dem-feels": "^1.8.1",
+    "geoip-ultralight": "^0.1.5",
+    "moment": "^2.24.0",
+    "node-serialize": "0.0.4",
+    "origindb": "^2.6.1",
     "probe-image-size": "^4.0.0",
     "sockjs": "0.3.19",
     "sucrase": "^3.10.1"
@@ -21,8 +27,7 @@
   "scripts": {
     "start": "node pokemon-showdown start",
     "build": "node build",
-    "test": "eslint --cache . && tslint --project . && node build && mocha -i -g \"\\(slow\\)\" && tsc",
-    "fulltest": "eslint --cache . && tslint --project . && node build && mocha && tsc",
+    "test": "eslint --cache . && tslint --project . && node build && mocha && tsc",
     "tsc": "tsc",
     "lint": "eslint --cache ."
   },
@@ -58,14 +63,14 @@
   "license": "MIT",
   "devDependencies": {
     "@types/cloud-env": "^0.2.0",
-    "@types/node": "^11.13.2",
+    "@types/node": "^11.13.0",
     "@types/node-static": "^0.7.3",
     "@types/nodemailer": "^4.6.7",
     "@types/sockjs": "^0.3.31",
-    "eslint": "^5.16.0",
+    "eslint": "^5.15.3",
     "husky": "^1.1.2",
-    "mocha": "^6.1.2",
+    "mocha": "^6.0.2",
     "tslint": "^5.15.0",
-    "typescript": "^3.4.2"
+    "typescript": "^3.3.4000"
   }
 }
