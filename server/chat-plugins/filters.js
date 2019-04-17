@@ -47,13 +47,13 @@ Chat.namefilter = function (name, user) {
 	const badHosts = Object.keys(Gold.lockedHosts);
 	const nameId = toId(name);
 
-	let badNameMatch = false;
+	/*let badNameMatch = false;
 	Config.bannedNames.forEach(badName => {
 		if (badNameMatch) return;
 		if (badName && nameId.includes(badName)) {
 			badNameMatch = true;
 		}
-	});
+	});*/
 	if (badNameMatch) {
 		user.send('|nametaken||Your name contains a banned word. Please change it to something appropriate.');
 		user.forceRenamed = name;
