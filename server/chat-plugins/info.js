@@ -1897,20 +1897,20 @@ exports.commands = {
 	 * Miscellaneous commands
 	 *********************************************************/
 
-	potd: function (target, room, user) {
+		potd(target, room, user) {
 		if (!this.can('potd')) return false;
 
 		Config.potd = target;
-		Rooms.SimulatorProcess.eval('Config.potd = \'' + toId(target) + '\'');
+		// TODO: support eval in new PM
+		Rooms.PM.eval('Config.potd = \'' + toId(target) + '\'');
 		if (target) {
-			if (Rooms.lobby) Rooms.lobby.addRaw("<div class=\"broadcast-blue\"><b>The Pok&eacute;mon of the Day is now " + target + "!</b><br />This Pokemon will be guaranteed to show up in random battles.</div>");
-			this.logModCommand("The Pok\u00e9mon of the Day was changed to " + target + " by " + user.name + ".");
+			if (Rooms.lobby) Rooms.lobby.addRaw(`<div class="broadcast-blue"><b>The Pok&eacute;mon of the Day is now ${target}!</b><br />This Pokemon will be guaranteed to show up in random battles.</div>`);
+			this.modlog('POTD', null, target);
 		} else {
-			if (Rooms.lobby) Rooms.lobby.addRaw("<div class=\"broadcast-blue\"><b>The Pok&eacute;mon of the Day was removed!</b><br />No pokemon will be guaranteed in random battles.</div>");
-			this.logModCommand("The Pok\u00e9mon of the Day was removed by " + user.name + ".");
+			if (Rooms.lobby) Rooms.lobby.addRaw(`<div class="broadcast-blue"><b>The Pok&eacute;mon of the Day was removed!</b><br />No pokemon will be guaranteed in random battles.</div>`);
+			this.modlog('POTD', null, 'removed');
 		}
 	},
-
 	'!dice': true,
 	roll: 'dice',
 	dice: function (target, room, user) {
