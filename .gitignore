@@ -1,4 +1,5 @@
 /config/*
+/server/config/*
 !/config/formats.js
 /logs/*
 /node_modules
