@@ -1,7 +1,7 @@
 Pokémon Showdown Command API
 ========================================================================
 
-Defining a Command
+Defining a Commands
 ------------------------------------------------------------------------
 
 You can define the commands such as 'whois', then use them by typing
@@ -16,7 +16,7 @@ This is called an alias: it makes it so `/ip` does the same thing as
 
 But to actually define a command, it's a function:
 
-	avatars(target, room, user) {
+	avatars: function (target, room, user) {
 		if (!this.runBroadcast()) return;
 		this.sendReplyBox('You can <button name="avatars">change ' +
 			'your avatar</button> by clicking on it in the <button ' +
@@ -70,7 +70,7 @@ As an example:
 
 	ip: 'whois',
 	rooms: 'whois',
-	whois(target, room, user, connection, cmd) {
+	whois: function (target, room, user, connection, cmd) {
 		<function body>
 	},
 	whoishelp:["/whois - Get details on yourself: alts, group, IP address,
@@ -225,11 +225,11 @@ A command can also be an object, in which case is treated like
 a namespace:
 
 	game: {
-		play(target, room, user) {
+		play: function (target, room, user) {
 			user.isPlaying = true;
 			this.sendReply("Playing.");
 		},
-		stop(target, room, user) {
+		stop: function (target, room, user) {
 			user.isPlaying = false;
 			this.sendReply("Stopped.");
 		}
@@ -247,12 +247,12 @@ Namespace objects can have help entries and so can the internal
 commands:
 
 	game: {
-		play(target, room, user) {
+		play: function (target, room, user) {
 			user.isPlaying = true;
 			this.sendReply("Playing.");
 		},
 		playhelp: ["Tells you if the user is playing."],
-		stop(target, room, user) {
+		stop: function (target, room, user) {
 			user.isPlaying = false;
 			this.sendReply("Stopped.");
 		},
