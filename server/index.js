@@ -96,6 +96,16 @@ global.LoginServer = require('./loginserver');
 global.Ladders = require('./ladders');
 
 global.Chat = require('./chat');
+global.WL = {};
+
+global.WL = require('C:/Users/administrator/desktop/Pokemon-Showdown-master/server/WL.js').WL;
+global.Tells = require('C:/Users/administrator/desktop/Pokemon-Showdown-master/server/tells.js');
+global.Ontime = {};
+global.Gold = {};
+global.Db = require('origindb')('config/db')
+global.rankLadder = require('C:/Users/administrator/desktop/Pokemon-Showdown-master/server/rank-ladder');
+
+
 
 global.Users = require('./users');
 

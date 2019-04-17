@@ -860,7 +860,8 @@ class GlobalRoom extends BasicRoom {
 	 * @param {Connection} connection
 	 */
 	onConnect(user, connection) {
-		connection.send(user.getUpdateuserText() + '\n' + this.configRankList + this.formatListText);
+		let initdata = '|updateuser|' + user.name + '|' + (user.named ? '1' : '0') + '|' + user.avatar + '\n';
+		connection.send(initdata + this.configRankList + this.formatListText);
 	}
 	/**
 	 * @param {User} user
@@ -1263,11 +1264,18 @@ class BasicChatRoom extends BasicRoom {
 	 * @param {User} user
 	 * @param {Connection} connection
 	 */
-	onConnect(user, connection) {
+onConnect(user, connection) {
 		let userList = this.userList ? this.userList : this.getUserList();
 		this.sendUser(connection, '|init|chat\n|title|' + this.title + '\n' + userList + '\n' + this.log.getScrollback() + this.getIntroMessage(user));
-		if (this.poll) this.poll.onConnect(user, connection);
+			if (this.poll) this.poll.onConnect(user, connection);
 		if (this.game && this.game.onConnect) this.game.onConnect(user, connection);
+		
+		//TEST
+		if (this.loto) user.sendTo(this.id, "|raw|"+ this.loto.infos());
+		if (this.rps) {
+			if (!this.rps.started) user.sendTo(this.id, "|raw|"+ this.rps.insInfos());
+		}
+		if (this.id == 'lobby') sendNews(user);
 	}
 	/**
 	 * @param {User} user
