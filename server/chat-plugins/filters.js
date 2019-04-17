@@ -8,7 +8,7 @@
  *
  * @license MIT license
  */
-'use strict';
+/*'use strict';
 
 const fs = require('fs');
 
@@ -17,7 +17,7 @@ let adRegex = new RegExp("(play.pokemonshowdown.com\\/~~)(?!(" + adWhitelist.joi
 
 let bannedMessages = Config.bannedMessages ? Config.bannedMessages : [];
 
-let proxyWhitelist = Config.proxyWhitelist || false;
+let proxyWhitelist = Config.proxyWhitelist || false;*/
 
 /*********************
  * Chatfilter Magic *
@@ -27,7 +27,7 @@ let proxyWhitelist = Config.proxyWhitelist || false;
 /*********************
  * Namefilter Magic *
  * ******************/
-try {
+/*try {
 	Config.bannedNames = fs.readFileSync('config/bannednames.txt', 'utf8').toLowerCase().split('\n');
 } catch (e) {
 	Config.bannedNames = [];
@@ -47,13 +47,13 @@ Chat.namefilter = function (name, user) {
 	const badHosts = Object.keys(Gold.lockedHosts);
 	const nameId = toId(name);
 
-	/*let badNameMatch = false;
+	let badNameMatch = false;
 	Config.bannedNames.forEach(badName => {
 		if (badNameMatch) return;
 		if (badName && nameId.includes(badName)) {
 			badNameMatch = true;
 		}
-	});*/
+	});
 	if (badNameMatch) {
 		user.send('|nametaken||Your name contains a banned word. Please change it to something appropriate.');
 		user.forceRenamed = name;
@@ -111,11 +111,11 @@ function trustedHack(name) {
 	if (rankIndex && rankIndex > 0) return true;
 	return false;
 }
-
+*/
 /*********************
  * Hostfilter Magic *
  * ******************/
-Gold.lockedHosts = Object.create(null);
+/*Gold.lockedHosts = Object.create(null);
 
 function loadHostBlacklist() {
 	fs.readFile('config/lockedhosts.json', 'utf8', function (err, file) {
@@ -278,4 +278,4 @@ exports.commands = {
 		"/autolockspam on - Enables automatically locking spammers in the current room. Requires: & ~",
 		"/autolockspam off - Disables automatically locking spammers in the current room. Requires: & ~",
 	],
-};
+};*/
