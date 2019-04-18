@@ -1397,7 +1397,7 @@ exports.commands = {
 		);
 	},
 
-	'!formathelp': true,
+	/*'!formathelp': true,
 	banlists: 'formathelp',
 	tier: 'formathelp',
 	tiers: 'formathelp',
@@ -1501,7 +1501,7 @@ exports.commands = {
 		}
 		buf.push(`</table>`);
 		return this.sendReply("|raw|" + buf.join("") + "");
-	},
+	},*/
 
 	'!roomhelp': true,
 	roomhelp: function (target, room, user) {
