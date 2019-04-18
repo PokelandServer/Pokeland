@@ -1101,8 +1101,11 @@ class CommandContext extends MessageContext {
 	logEntry() {
 		throw new Error(`this.logEntry has been renamed to this.roomlog.`);
 	}
-	addModCommand() {
-		throw new Error(`this.addModCommand has been renamed to this.addModAction, which no longer writes to modlog.`);
+	addModCommand(msg) {
+				this.room.addByUser(this.user, msg);
+	}
+	update() {
+		if (this.room) this.room.update();
 	}
 	/**
 	 * @param {string} msg
