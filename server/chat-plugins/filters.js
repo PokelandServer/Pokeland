@@ -8,7 +8,7 @@
  *
  * @license MIT license
  */
-/*'use strict';
+'use strict';
 
 const fs = require('fs');
 
@@ -17,7 +17,7 @@ let adRegex = new RegExp("(play.pokemonshowdown.com\\/~~)(?!(" + adWhitelist.joi
 
 let bannedMessages = Config.bannedMessages ? Config.bannedMessages : [];
 
-let proxyWhitelist = Config.proxyWhitelist || false;*/
+let proxyWhitelist = Config.proxyWhitelist || false;
 
 /*********************
  * Chatfilter Magic *
@@ -27,7 +27,7 @@ let proxyWhitelist = Config.proxyWhitelist || false;*/
 /*********************
  * Namefilter Magic *
  * ******************/
-/*try {
+try {
 	Config.bannedNames = fs.readFileSync('config/bannednames.txt', 'utf8').toLowerCase().split('\n');
 } catch (e) {
 	Config.bannedNames = [];
@@ -92,7 +92,7 @@ Chat.namefilter = function (name, user) {
 				user.locked = '#hostfilter';
 				user.updateIdentity();
 				user.popup("|modal|Tu as été automatiquement lock ! Car tu utilises un proxy ! Si tu veux être unlock désactive-le !");
-				Monitor.log("[ProxyMonitor] " + name + " (" + ip + ") a était automatiquement lock et déconnecté. (" + host + ")");
+				//Monitor.log("[ProxyMonitor] " + name + " (" + ip + ") a été automatiquement lock et déconnecté. (" + host + ")");
 				return;
 			}
 		});
@@ -111,11 +111,11 @@ function trustedHack(name) {
 	if (rankIndex && rankIndex > 0) return true;
 	return false;
 }
-*/
+
 /*********************
  * Hostfilter Magic *
  * ******************/
-/*Gold.lockedHosts = Object.create(null);
+Gold.lockedHosts = Object.create(null);
 
 function loadHostBlacklist() {
 	fs.readFile('config/lockedhosts.json', 'utf8', function (err, file) {
@@ -278,4 +278,4 @@ exports.commands = {
 		"/autolockspam on - Enables automatically locking spammers in the current room. Requires: & ~",
 		"/autolockspam off - Disables automatically locking spammers in the current room. Requires: & ~",
 	],
-};*/
+};
