@@ -47,24 +47,6 @@ Chat.namefilter = function (name, user) {
 	const badHosts = Object.keys(Gold.lockedHosts);
 	const nameId = toId(name);
 
-	let badNameMatch = false;
-	Config.bannedNames.forEach(badName => {
-		if (badNameMatch) return;
-		if (badName && nameId.includes(badName)) {
-			badNameMatch = true;
-		}
-	});
-	if (badNameMatch) {
-		user.send('|nametaken||Your name contains a banned word. Please change it to something appropriate.');
-		user.forceRenamed = name;
-		return false;
-	}
-
-	if (user.forceRenamed) {
-		Monitor.log(`[NameMonitor] ${name} (forcerenamed from ${user.forceRenamed})`);
-		user.forceRenamed = undefined;
-	}
-
 	// Hostfilter stuff
 	if (!user.connections) return name; // this should never happen
 	let conNum = Object.keys(user.connections).length - 1;
