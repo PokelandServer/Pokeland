@@ -280,7 +280,7 @@ exports.commands = {
 	guide: function (target, room, user) {
 		if (!this.runBroadcast()) return;
 		this.sendReplyBox(
- '<center><button class="button" name="send" value="/guidepopup">GUIDE DU SERVEUR</button></center>'
+ '<center><button class="button" name="send" value="/guidepopup"><h1>GUIDE DU SERVEUR</h1></button></center>'
 		);
 	},
 	'!live': true,
