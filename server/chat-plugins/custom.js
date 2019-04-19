@@ -276,6 +276,13 @@ exports.commands = {
 			this.add('|raw|<div class="broadcast-blue"><b>UnWailordRandom❤ est en stream , n\'hésite pas à aller jeter un coup d\' œil à <a href="https://www.twitch.tv/theretrogamersurtwitch" target="_blank" rel="noopener">https://www.twitch.tv/theretrogamersurtwitch</a></b></div>')
 			}
 		},	
+		'!guide': true,
+	guide: function (target, room, user) {
+		if (!this.runBroadcast()) return;
+		this.sendReplyBox(
+ '<center><button class="button" name="send" value="/guidepopup">GUIDE DU SERVEUR</button></center>'
+		);
+	},
 	'!live': true,
 	live: function (target, room, user) {
 		if (!this.runBroadcast()) return;
@@ -307,6 +314,7 @@ exports.commands = {
    
     
 },
+	
 	hangmanuser: 'hangmanrequest',
 	hr: 'hangmanrequest',
 	hangmanrequest: function (target, room, user, connection) {
