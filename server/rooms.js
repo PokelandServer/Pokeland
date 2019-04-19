@@ -1226,7 +1226,7 @@ class BasicChatRoom extends BasicRoom {
 	 * @param {User} user
 	 */
 	getIntroMessage(user) {
-		let message = Chat.html`\n|raw|<div class="infobox"> You joined ${this.title}`;
+		let message = Chat.html`\n|raw|<div class="infobox"> Vous avez rejoint la room: ${this.title}`;
 		if (this.modchat) {
 			message += ` [${this.modchat} or higher to talk]`;
 		}
