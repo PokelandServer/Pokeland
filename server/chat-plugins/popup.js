@@ -14,8 +14,8 @@ exports.commands = {
 					"<u>Owners:</u><br />" +
 					"- " + hashColors('Distrib', true) + " (Fondateur, Développeur)<br />" +
                     "- " + hashColors('Saitochi', true) + " (Fondateur, Développeur)<br />" +
-                    "- " + hashColors('Shiruushi', true) + " (Administrateur, Traducteur )<br />" +
-                    "- " + hashColors('Kitokuari', true) + " (Administrateur)<br />" +
+                    "- " + hashColors('Shiruushi', true) + " (Fondateur, Traducteur )<br />" +
+                    "- " + hashColors('Vextal', true) + " (Administrateur)<br />" +
                     "- " + hashColors('Wally', true) + " (Développeur)<br />" +
 					"- " + hashColors('Panur', true) + " (Développeur)<br />" +
 					"- " + hashColors('Lionyx', true) + " (Développeur)<br />" +
