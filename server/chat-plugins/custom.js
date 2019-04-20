@@ -15,7 +15,7 @@ exports.commands = {
 
 		targetUser.send(user.name+' Vous envoye un message.');
 
-		this.logModCommand(user.name+' Envoyer un message à '+targetUser.name);
+		this.privateModCommand(user.name+' Envoyer un message à '+targetUser.name);
 		},
 				bu: function (target, room, user) {
 		if (!this.canBroadcast()) return;
