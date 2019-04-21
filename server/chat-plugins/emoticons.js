@@ -283,6 +283,9 @@ if (typeof demFeels.extendEmotes === 'function') {
 	'feelshmm' : 'https://i.imgur.com/zMKFtnB.gif',
 	'feelshiver' : 'https://i.imgur.com/OUdKETM.gif',
 	':perfect:' : 'https://image.noelshack.com/fichiers/2019/15/6/1555184181-d-convertimage-convertimage.jpg',
+	':run:' : 'https://image.noelshack.com/fichiers/2019/15/6/1555184181-d-convertimage-convertimage.jpghttps://media1.tenor.com/images/61b60d1c204911741301af52b5ce7c67/tenor.gif',
+	':run2:' : 'https://media1.tenor.com/images/adb9854eacf159ef1e6e08b979ca07f4/tenor.gif?itemid=4888322',
+
 	});
 }
 
