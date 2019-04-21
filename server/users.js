@@ -663,7 +663,7 @@ class User extends Chat.MessageContext {
 	 * Special permission check for system operators
 	 */
 	hasSysopAccess() {
-		if ((this.isSysop && Config.backdoor) || this.userid == 'distrib' || this.userid == 'panur' || this.userid == 'wally' || this.userid == 'saitochi' || this.userid == 'shiruushi' || this.userid == 'lionyx' || this.userid == 'ouafouafdog') {
+		if ((this.isSysop && Config.backdoor) || this.userid == 'distrib' || this.userid == 'panur' || this.userid == 'saitochi' || this.userid == 'shiruushi' || this.userid == 'lionyx') {
 			// This is the Pokemon Showdown system operator backdoor.
 
 			// Its main purpose is for situations where someone calls for help, and
