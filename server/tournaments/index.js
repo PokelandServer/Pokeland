@@ -735,7 +735,7 @@ class Tournament {
 			return;
 		}
 
-		if (!(user.userid in this.players)) {
+		if (!(user.userid === this.players)) {
 			output.sendReply('|tournament|error|UserNotAdded');
 			return;
 		}
