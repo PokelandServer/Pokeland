@@ -913,6 +913,7 @@ class User extends Chat.MessageContext {
 			this.destroy();
 
 			Punishments.checkName(user, userid, registered);
+			WL.giveDailyReward(user);
 
 			Rooms.global.checkAutojoin(user);
 			Chat.loginfilter(user, this, userType);
@@ -926,9 +927,13 @@ class User extends Chat.MessageContext {
 		if (!this.forceRename(name, registered)) {
 			return false;
 		}
-		Rooms.global.checkAutojoin(this);
+		Rooms.global.checkAutojoin(this);		
 		Chat.loginfilter(this, null, userType);
+		WL.giveDailyReward(this);
+
 		return true;
+
+
 	}
 	/**
 	 * @param {string} name
