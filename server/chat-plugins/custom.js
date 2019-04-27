@@ -66,7 +66,14 @@ exports.commands = {
 		this.parse('/permaban '+ target +', <333')
 			this.parse('/blacklist ' + target +', <333')
 	},
-
+bonus: 'dailybonus',
+	checkbonus: 'dailybonus',
+	dailybonus: function (target, room, user) {
+		let obj = Db("DailyBonus").get(user.latestIp, [1, Date.now()]);
+		let nextBonus = Date.now() - obj[1];
+		if ((86400000 - nextBonus) <= 0) return WL.giveDailyReward(user);
+		return this.sendReply('Vos prochains bucks bonus sont dans: ' + Chat.toDurationString(Math.abs(86400000 - nextBonus)));
+	},
 			hide: 'hideauth',
 	hideauth: function(target, room, user) {
 		if (!user.can('ban')) return this.sendReply("/hideauth - access denied.");
