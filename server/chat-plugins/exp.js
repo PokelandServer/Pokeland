@@ -1,12 +1,12 @@
-'use strict';
+/*'use strict';
 let path = require('path');
-let fs = require('fs');
+let fs = require('fs');*/
 /**
  * Système d'EXP pour Pokémon Showdown
  
  */
  
-const DEFAULT_AMOUNT = 0;
+/*const DEFAULT_AMOUNT = 0;
 let DOUBLE_XP = false;
  
 const minLevelExp = 15;
@@ -231,7 +231,7 @@ exports.commands = {
         if (!this.can('roomowner')) return;
         DOUBLE_XP = !DOUBLE_XP;
         return this.sendReply('Double XP a été tourné en : ' + (DOUBLE_XP ? 'ON' : 'OFF') + '.');
-    },
+    },*/
  
     /*expon: function (target, room, user) {
         if (!this.can('root')) return false;
@@ -245,7 +245,7 @@ exports.commands = {
         this.sendReply("Vous êtes maintenant dispensé d'XP");
     },*/
  
-    '!xpladder': true,
+   /* '!xpladder': true,
     expladder: 'xpladder',
     xpladder: function (target, room, user) {
         if (!target) target = 100;
@@ -298,4 +298,4 @@ global.rankLadders = function (title, type, array, prop, group) {
 		}
 	}
 	return ladderTitle + tableTop + tableRows + tableBottom;
-};
+};*/
