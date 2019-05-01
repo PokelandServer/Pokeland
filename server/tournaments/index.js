@@ -959,9 +959,9 @@ class Tournament {
            		if ((this.room.id === 'lobby' || this.room.id === 'tournaments') && getClan(wid)) {
            			this.room.addRaw("<b><font color='" + color + "'>" + Chat.escapeHTML(winner) + "</font> remporte " + "<font color='" + color + "'>" + "10" + "</font>" + " EXP" + " !</b>");
 
-           		//}
-           //		WL.addExp(wid, this.room, parseInt(firstMoney+10));
-           	//	Users(wid).send('|raw|+'+ parseInt(firstMoney+10)+' exp');
+           		}
+           //	WL.addExp(wid, this.room, parseInt(firstMoney+10));
+           	Users(wid).send('|raw|+'+ parseInt(firstMoney+10)+' exp');
 
  
            	}
