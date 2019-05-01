@@ -1202,9 +1202,9 @@ class User extends Chat.MessageContext {
 	 * @param {Connection} connection
 	 */
 	onDisconnect(connection) {
-				if (this.named) Db.seen.set(this.userid, Date.now());
+				if (this.named) Db("seen").set(this.userid, Date.now());
 		if (Ontime[this.userid]) {
-			Db.ontime.set(this.userid, Db.ontime.get(this.userid, 0) + (Date.now() - Ontime[this.userid]));
+			Db("ontime").set(this.userid, Db("ontime").get(this.userid, 0) + (Date.now() - Ontime[this.userid]));
 			delete Ontime[this.userid];
 		}
 		for (const [i, connected] of this.connections.entries()) {
