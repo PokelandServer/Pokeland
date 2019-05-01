@@ -213,15 +213,16 @@ exports.commands = {
 	},
 	showdownboilerplatehelp: ["/showdownboilerplate - Links to the Showdown-Boilerplate repository on Github."],
 
+	'!seen': true,
 	seen: function (target, room, user) {
 		if (!this.runBroadcast()) return;
 		if (!target) return this.parse('/help seen');
 		let targetUser = Users.get(target);
 		if (targetUser && targetUser.connected) return this.sendReplyBox(targetUser.name + " est <b>actuellement en ligne</b>.");
 		target = Chat.escapeHTML(target);
-		let seen = Db('seen').get(toId(target));
+		let seen = Db.seen.get(toId(target));
 		if (!seen) return this.sendReplyBox(target + " ne s'est jamais connecté sur ce serveur.");
-		this.sendReplyBox(target + " a été vu pour la dernière fois <b>" + moment(seen).fromNow() + "</b>.");
+		this.sendReplyBox(target + " a été vu pour la dernière fois <b>" + Chat.toDurationString(Date.now() - seen, {precision: true}) + "</b> ago.");
 	},
 	seenhelp: ["/seen - Shows when the user last connected on the server."],
 
