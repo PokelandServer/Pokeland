@@ -287,6 +287,7 @@ if (typeof demFeels.extendEmotes === 'function') {
 	':run2:' : 'https://media1.tenor.com/images/adb9854eacf159ef1e6e08b979ca07f4/tenor.gif?itemid=4888322',
 	':mdr:' : 'https://cdn.discordapp.com/emojis/407618759637860352.png?v=1',
 	':nomnom:' : 'https://image.noelshack.com/fichiers/2019/18/4/1556823485-tenor.gif',
+	'feelsclown' : 'https://static-cdn.jtvnw.net/emoticons/v1/300213026/1.0',
 
 	});
 }
