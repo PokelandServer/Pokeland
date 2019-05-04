@@ -50,13 +50,13 @@ function generateCSS(name, icon) {
 }
 
 exports.commands = {
-	userlisticon: 'userlisticons',
-	userlisticons: {
+	ri: 'ri',
+	ri: {
 		set: function (target, room, user) {
 			if (!this.can('root')) return false;
 			target = target.split(',');
 			for (let u = 0; u < target.length; u++) target[u] = target[u].trim();
-			if (!target[1]) return this.parse('/help userlisticons');
+			if (!target[1]) return this.parse('/help ri');
 			if (!Rooms(target[0])) return this.errorReply("Room doesnt exist!");
 			this.sendReply("|raw|You have given " + target[0] + " a room icon. <img src='" + target[1] + "' height='32' width='32'>");
 		    listIcons[toId(target[0])] = target[1];
@@ -79,13 +79,13 @@ exports.commands = {
 			this.privateModCommand("(" + user.name + " has reloaded userlist roomicons.)");
 		},
 		'': function (target, room, user) {
-			return this.parse("/help userlisticons");
+			return this.parse("/help ri");
 		},
 	},
-	userlisticonshelp: [
+	rihelp: [
 		"Commands Include:",
-		"/userlisticons set [room], [image]",
-		"/userlisticons delete [user], delete - Deletes a userlist roomsicon",
-		"/userlisticons reload - Reloads userlist roomicons.",
+		"/ri set [room], [image]",
+		"/ri delete [user], delete - Deletes a userlist roomsicon",
+		"/ri reload - Reloads userlist roomicons.",
 	],
 };
