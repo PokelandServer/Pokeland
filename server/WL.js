@@ -435,10 +435,10 @@ exports.WL = {
 			if (evoData.special) {
 				// Special rules for special evolutions
 				if (pokemon.species === 'nincada') {
-					let player = Db.players.get(toId(userid));
+					let player = Db("players").get(toId(userid));
 					if (player.party.length >= 5 || !player.bag.pokeballs.pokeball) continue;
 				} else if (pokemon.species === 'mantyke') {
-					let player = Db.players.get(toId(userid));
+					let player = Db("players").get(toId(userid));
 					let rem = false;
 					for (let p = 0; p < player.party.length; p++) {
 						if (player.party[p].species === 'remoraid') {
