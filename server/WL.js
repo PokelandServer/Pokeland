@@ -303,7 +303,7 @@ exports.WL = {
 		avrg = avrg / team.length;
 		return Math.round(avrg);
 	},
-	gameData: JSON.parse(FS('config/SGGame/pokemon.json').readIfExistsSync()),
+	gameData: JSON.parse(fs('config/SGGame/pokemon.json').readIfExistsSync()),
 	calcExp: function (pokemon, n) {
 		pokemon = toId(pokemon);
 		let type = this.getEXPType(pokemon);
@@ -491,7 +491,7 @@ exports.WL = {
 		if (data.item) return data.item;
 		return false;
 	},
-	itemData: JSON.parse(FS('config/SGGame/items.json').readIfExistsSync()),
+	itemData: JSON.parse(fs('config/SGGame/items.json').readIfExistsSync()),
 	getItem: function (id) {
 		id = toId(id);
 		if (!this.itemData[id]) return false;
@@ -839,13 +839,13 @@ exports.WL = {
 // last two functions needed to make sure WL.regdate() fully works
 function loadRegdateCache() {
 	try {
-		regdateCache = JSON.parse(FS('config/regdate.json').readIfExistsSync());
+		regdateCache = JSON.parse(fs('config/regdate.json').readIfExistsSync());
 	} catch (e) {}
 }
 loadRegdateCache();
 
 function saveRegdateCache() {
-	FS('config/regdate.json').writeSync(JSON.stringify(regdateCache));
+	fs('config/regdate.json').writeSync(JSON.stringify(regdateCache));
 }
 
 function showDailyRewardAni(streak) {
