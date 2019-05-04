@@ -47,7 +47,7 @@ WL.onlineFriends = onlineFriends;
 					offline = "last seen <b>" + Chat.toDurationString(Date.now() - seen, {precision: true}) + "</b> ago.";
 				}
 				let online = Users(friend) && Users(friend).connected;
-				display += `${WL.nameColor(friend, true)}: ${online ? '<font color="#00ff00">Online</font>' : '<font color="#ff0000">Offline (' + offline + ')</font>'}<br />`;
+				display += `${hashColors(friend, true)}: ${online ? '<font color="#00ff00">Online</font>' : '<font color="#ff0000">Offline (' + offline + ')</font>'}<br />`;
 			}
 			display += `Total Friends: ${friends.length}</center>`;
 			return this.sendReplyBox(display);
