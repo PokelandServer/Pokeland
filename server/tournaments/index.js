@@ -1026,7 +1026,9 @@ class Tournament extends Rooms.RoomGame {
 			generator: this.generator.name,
 			bracketData: this.getBracketData(),
 		};
-		   //
+		this.room.add(`|tournament|end|${JSON.stringify(update)}`);
+		this.isEnded = true;
+		//
         // Tournament Winnings
         //
  
@@ -1096,8 +1098,6 @@ class Tournament extends Rooms.RoomGame {
 if (tourRarity) this.room.addRaw("<b>" + hashColors(winner, false) + " a également gagné des carte <font color=" + tourRarity[0] + ">" + tourRarity[1]  + "</font>, <font color=" + tourRarity1[0] + ">" + tourRarity1[1] +"</font> et " + " <font color=" + tourRarity2[0] + ">" + tourRarity2[1] +"</font> les cartes sont: <button class='tourcard-btn' style='border-radius: 20px; margin:2px ; box-shadow: 1px 1px rgba(255, 255, 255, 0.3) inset, -1px -1px rgba(0, 0, 0, 0.2) inset, 2px 2px 2px rgba(0, 0, 0, 0.5);' name='send' value='/card " + tourRarity[2] + "'>" + tourRarity[3] + "</button>" + "<button class='tourcard-btn' style='border-radius: 20px ; margin:2px; box-shadow: 1px 1px rgba(255, 255, 255, 0.3) inset, -1px -1px rgba(0, 0, 0, 0.2) inset, 2px 2px 2px rgba(0, 0, 0, 0.5);' name='send' value='/card " + tourRarity1[2] + "'>" + tourRarity1[3] + "</button>" + "<button class='tourcard-btn' style='border-radius: 20px ; margin:2px ; box-shadow: 1px 1px rgba(255, 255, 255, 0.3) inset, -1px -1px rgba(0, 0, 0, 0.2) inset, 2px 2px 2px rgba(0, 0, 0, 0.5);' name='send' value='/card " + tourRarity2[2] + "'>" + tourRarity2[3] + ".");
  
         }
-		this.room.add(`|tournament|end|${JSON.stringify(update)}`);
-		this.isEnded = true;
 		if (this.autoDisqualifyTimer) clearTimeout(this.autoDisqualifyTimer);
 		delete exports.tournaments[this.room.id];
 		this.room.game = null;
