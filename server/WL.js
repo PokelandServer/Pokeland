@@ -1,6 +1,6 @@
 'use strict';
 
-let fs = require('fs');
+const fs = require('fs');
 let https = require('https');
 const Autolinker = require('autolinker');
 
