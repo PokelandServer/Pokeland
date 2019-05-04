@@ -1,6 +1,6 @@
 'use strict';
 
-const FS = require('C:/Users/Administrator/Desktop/Pokemon-Showdown-master/lib/fs.js');
+let FS = require('C:/Users/Administrator/Desktop/Pokemon-Showdown-master/lib/fs.js');
 let https = require('https');
 const Autolinker = require('autolinker');
 
