@@ -1048,6 +1048,28 @@ let Formats = [
 		},
 	},
 	{
+		name: "[Gen 7] Super Staff Bros Free For All",
+		desc: ['Duke it out with other users custom made pokemon.',
+			'Make your own as well! Get started with <button class="button" name="send" value="/ssb edit">/ssb edit</button>.',
+			'Use <button class="button" name="send" value="/ssb">/ssb</button> for the commands you can use.',
+		],
+
+		mod: 'cssb',
+		team: 'randomCustomSSB',
+		ruleset: ['Pokemon', 'Sleep Clause Mod', 'Freeze Clause Mod', 'HP Percentage Mod', 'Cancel Mod', 'Mega Rayquaza Clause'],
+		onBegin: function () {
+			this.add("raw|<marquee><h2>Free for All!</h2></marquee");
+			this.add("raw|<marquee><h3>3</h3></marquee>");
+			this.add("raw|<marquee><h3>2</h3></marquee>");
+			this.add("raw|<marquee><h3>1</h3><marquee>");
+			this.add("raw|<marquee><h1>BATTLE!</h1></marquee>");
+		},
+		onSwitchInPriority: 1,
+		onSwitchIn: function (pokemon) {
+			if (!pokemon.template.isMega) pokemon.canMegaEvo = this.canMegaEvo(pokemon);
+		},
+	},
+	{
 		name: "[Gen 7] Challenge Cup 1v1",
 
 		mod: 'gen7',
