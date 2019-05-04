@@ -1,7 +1,7 @@
 /*
  * KickServer created by Maaff / Trad by Distrib
  */
- exports.commands = {
+/* exports.commands = {
      ks: 'kickserver',
      kickserver: function(target, room, user) {
          if (!this.can('forcewin')) return false;
@@ -15,4 +15,4 @@
          targetUser.disconnectAll();
      },
      kickserverhelp: ["/kickserver OU /ks [username] - Kick un utilisateur du serveur. Requiert: @ & ~"],
- };
+ };*/
