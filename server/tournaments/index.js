@@ -1607,157 +1607,149 @@ const commands = {
 };
 
 Chat.loadPlugins();
-/** @type {ChatCommands} */
-const chatCommands = {
-	tour: 'tournament',
-	tours: 'tournament',
-	tournaments: 'tournament',
-	tournament(target, room, user, connection) {
-		let cmd;
-		[cmd, target] = Chat.splitFirst(target, ' ');
-		cmd = toId(cmd);
-
-		let params = target.split(',').map(param => param.trim());
-		if (!params[0]) params = [];
-
-		if (cmd === '') {
-			if (!this.runBroadcast()) return;
-			const update = Object.keys(exports.tournaments).filter(roomid => {
-				const tournament = exports.tournaments[roomid];
-				return !tournament.room.isPrivate && !tournament.room.isPersonal && !tournament.room.staffRoom;
-			}).map(roomid => {
-				const tournament = exports.tournaments[roomid];
-				return {room: tournament.room.id, title: tournament.room.title, format: tournament.format, generator: tournament.generator.name, isStarted: tournament.isTournamentStarted};
-			});
-			this.sendReply(`|tournaments|info|${JSON.stringify(update)}`);
-		} else if (cmd === 'help') {
-			return this.parse('/help tournament');
-		} else if (this.meansYes(cmd)) {
-			if (!this.can('gamemanagement', null, room)) return;
-			let rank = params[0];
-			if (rank === '@') {
-				if (room.toursEnabled === true) return this.errorReply("Tournaments are already enabled for @ and above in this room.");
-				room.toursEnabled = true;
-				if (room.chatRoomData) {
-					room.chatRoomData.toursEnabled = true;
-					Rooms.global.writeChatRoomData();
-				}
-				return this.sendReply("Tournaments are now enabled for @ and up.");
-			} else if (rank === '%') {
-				if (room.toursEnabled === rank) return this.errorReply("Tournaments are already enabled for % and above in this room.");
-				room.toursEnabled = rank;
-				if (room.chatRoomData) {
-					room.chatRoomData.toursEnabled = rank;
-					Rooms.global.writeChatRoomData();
-				}
-				return this.sendReply("Tournaments are now enabled for % and up.");
-			} else {
-				return this.errorReply("Tournament enable setting not recognized.  Valid options include [%|@].");
-			}
-		} else if (this.meansNo(cmd)) {
-			if (!this.can('gamemanagement', null, room)) return;
-			if (!room.toursEnabled) {
-				return this.errorReply("Tournaments are already disabled.");
-			}
-			room.toursEnabled = false;
-			if (room.chatRoomData) {
-				room.chatRoomData.toursEnabled = false;
-				Rooms.global.writeChatRoomData();
-			}
-			return this.sendReply("Tournaments are now disabled.");
-		} else if (cmd === 'announce' || cmd === 'announcements') {
-			if (!this.can('gamemanagement', null, room)) return;
-			if (!Config.tourannouncements.includes(room.id)) {
-				return this.errorReply("Tournaments in this room cannot be announced.");
-			}
-			if (params.length < 1) {
-				if (room.tourAnnouncements) {
-					return this.sendReply("Tournament announcements are enabled.");
-				} else {
-					return this.sendReply("Tournament announcements are disabled.");
-				}
-			}
-
-			let option = params[0].toLowerCase();
-			if (this.meansYes(option)) {
-				if (room.tourAnnouncements) return this.errorReply("Tournament announcements are already enabled.");
-				room.tourAnnouncements = true;
-				this.privateModAction(`(Tournament announcements were enabled by ${user.name})`);
-				this.modlog('TOUR ANNOUNCEMENTS', null, 'ON');
-			} else if (this.meansNo(option)) {
-				if (!room.tourAnnouncements) return this.errorReply("Tournament announcements are already disabled.");
-				room.tourAnnouncements = false;
-				this.privateModAction(`(Tournament announcements were disabled by ${user.name})`);
-				this.modlog('TOUR ANNOUNCEMENTS', null, 'OFF');
-			} else {
-				return this.sendReply(`Usage: ${cmd} <on|off>`);
-			}
-
-			if (room.chatRoomData) {
-				room.chatRoomData.tourAnnouncements = room.tourAnnouncements;
-				Rooms.global.writeChatRoomData();
-			}
-		} else if (cmd === 'create' || cmd === 'new') {
-			if (room.toursEnabled === true) {
-				if (!this.can('tournaments', null, room)) return;
-			} else if (room.toursEnabled === '%') {
-				if (!this.can('gamemoderation', null, room)) return;
-			} else {
-				if (!user.can('gamemanagement', null, room)) {
-					return this.errorReply(`Tournaments are disabled in this room (${room.id}).`);
-				}
-			}
-			if (params.length < 2) {
-				return this.sendReply(`Usage: ${cmd} <format>, <type> [, <comma-separated arguments>]`);
-			}
-
-			/** @type {Tournament | undefined} */
-			let tour = createTournament(room, params.shift(), params.shift(), params.shift(), Config.ratedtours, params, this);
-			if (tour) {
-				this.privateModAction(`(${user.name} created a tournament in ${tour.format} format.)`);
-				this.modlog('TOUR CREATE', null, tour.format);
-				if (room.tourAnnouncements) {
-					let tourRoom = Rooms.search(Config.tourroom || 'tournaments');
-					if (tourRoom && tourRoom !== room) tourRoom.addRaw(`<div class="infobox"><a href="/${room.id}" class="ilink"><strong>${Chat.escapeHTML(Dex.getFormat(tour.format).name)}</strong> tournament created in <strong>${Chat.escapeHTML(room.title)}</strong>.</a></div>`).update();
-				}
-			}
-		} else {
-			let tournament = getTournament(room.id);
-			if (!tournament) {
-				return this.sendReply("There is currently no tournament running in this room.");
-			}
-
-			let commandHandler = commands.basic[cmd];
-			if (commandHandler) {
-				if (typeof commandHandler === 'string') commandHandler = commands.basic[commandHandler];
-			} else if (commands.creation[cmd]) {
-				if (room.toursEnabled === true) {
-					if (!this.can('tournaments', null, room)) return;
-				} else if (room.toursEnabled === '%') {
-					if (!this.can('gamemoderation', null, room)) return;
-				} else {
-					if (!user.can('gamemanagement', null, room)) {
-						return this.errorReply(`Tournaments are disabled in this room (${room.id}).`);
-					}
-				}
-				commandHandler = commands.creation[cmd];
-				if (typeof commandHandler === 'string') commandHandler = commands.creation[commandHandler];
-			} else if (commands.moderation[cmd]) {
-				if (!user.can('gamemoderation', null, room)) {
-					return this.errorReply(`${cmd} -  Access denied.`);
-				}
-				commandHandler = commands.moderation[cmd];
-				if (typeof commandHandler === 'string') commandHandler = commands.moderation[commandHandler];
-			}
-
-			if (typeof commandHandler === 'string') throw new Error(`Invalid tour command alis ${cmd}`);
-			if (!commandHandler) {
-				this.errorReply(`${cmd} is not a tournament command.`);
-			} else {
-				commandHandler.call(this, tournament, user, params, cmd, connection);
-			}
-		}
-	},
+Chat.commands.tour = 'tournament';
+Chat.commands.tours = 'tournament';
+Chat.commands.tournaments = 'tournament';
+Chat.commands.tournament = function (paramString, room, user, connection) {
+    let cmdParts = paramString.split(' ');
+    let cmd = cmdParts.shift().trim().toLowerCase();
+    let params = cmdParts.join(' ').split(',').map(param => param.trim());
+    if (!params[0]) params = [];
+ 
+    if (cmd === '') {
+        if (!this.runBroadcast()) return;
+        this.sendReply('|tournaments|info|' + JSON.stringify(Object.keys(exports.tournaments).filter(tournament => {
+            tournament = exports.tournaments[tournament];
+            return !tournament.room.isPrivate && !tournament.room.isPersonal && !tournament.room.staffRoom;
+        }).map(tournament => {
+            tournament = exports.tournaments[tournament];
+            return {room: tournament.room.id, title: tournament.room.title, format: tournament.format, generator: tournament.generator.name, isStarted: tournament.isTournamentStarted};
+        })));
+    } else if (cmd === 'help') {
+        return this.parse('/help tournament');
+    } else if (this.meansYes(cmd)) {
+        if (!this.can('tournamentsmanagement', null, room)) return;
+        let rank = params[0];
+        if (rank && rank === '@') {
+            if (room.toursEnabled === true) return this.errorReply("Tournaments are already enabled for @ and above in this room.");
+            room.toursEnabled = true;
+            if (room.chatRoomData) {
+                room.chatRoomData.toursEnabled = true;
+                Rooms.global.writeChatRoomData();
+            }
+            return this.sendReply("Tournaments are now enabled for @ and up.");
+        } else if (rank && rank === '%') {
+            if (room.toursEnabled === rank) return this.errorReply("Tournaments are already enabled for % and above in this room.");
+            room.toursEnabled = rank;
+            if (room.chatRoomData) {
+                room.chatRoomData.toursEnabled = rank;
+                Rooms.global.writeChatRoomData();
+            }
+            return this.sendReply("Tournaments are now enabled for % and up.");
+        } else {
+            return this.errorReply("Tournament enable setting not recognized.  Valid options include [%|@].");
+        }
+    } else if (this.meansNo(cmd)) {
+        if (!this.can('tournamentsmanagement', null, room)) return;
+        if (!room.toursEnabled) {
+            return this.errorReply("Tournaments are already disabled.");
+        }
+        delete room.toursEnabled;
+        if (room.chatRoomData) {
+            delete room.chatRoomData.toursEnabled;
+            Rooms.global.writeChatRoomData();
+        }
+        return this.sendReply("Tournaments are now disabled.");
+    } else if (cmd === 'announce' || cmd === 'announcements') {
+        if (!this.can('tournamentsmanagement', null, room)) return;
+        if (!Config.tourannouncements.includes(room.id)) {
+            return this.errorReply("Tournaments in this room cannot be announced.");
+        }
+        if (params.length < 1) {
+            if (room.tourAnnouncements) {
+                return this.sendReply("Tournament announcements are enabled.");
+            } else {
+                return this.sendReply("Tournament announcements are disabled.");
+            }
+        }
+ 
+        let option = params[0].toLowerCase();
+        if (this.meansYes(option)) {
+            if (room.tourAnnouncements) return this.errorReply("Tournament announcements are already enabled.");
+            room.tourAnnouncements = true;
+            this.privateModCommand("(Tournament announcements were enabled by " + user.name + ")");
+        } else if (this.meansNo(option)) {
+            if (!room.tourAnnouncements) return this.errorReply("Tournament announcements are already disabled.");
+            room.tourAnnouncements = false;
+            this.privateModCommand("(Tournament announcements were disabled by " + user.name + ")");
+        } else {
+            return this.sendReply("Usage: " + cmd + " <on|off>");
+        }
+ 
+        if (room.chatRoomData) {
+            room.chatRoomData.tourAnnouncements = room.tourAnnouncements;
+            Rooms.global.writeChatRoomData();
+        }
+    } else if (cmd === 'create' || cmd === 'new') {
+        if (room.toursEnabled === true) {
+            if (!this.can('tournaments', null, room)) return;
+        } else if (room.toursEnabled === '%') {
+            if (!this.can('tournamentsmoderation', null, room)) return;
+        } else {
+            if (!user.can('tournamentsmanagement', null, room)) {
+                return this.errorReply("Tournaments are disabled in this room (" + room.id + ").");
+            }
+        }
+        if (params.length < 2) {
+            return this.sendReply("Usage: " + cmd + " <format>, <type> [, <comma-separated arguments>]");
+        }
+ 
+        let tour = createTournament(room, params.shift(), params.shift(), params.shift(), Config.ratedtours, params, this);
+        if (tour) {
+            this.privateModCommand("(" + user.name + " created a tournament in " + tour.format + " format.)");
+            if (room.tourAnnouncements) {
+                let tourRoom = Rooms.search(Config.tourroom || 'tournaments');
+                if (tourRoom && tourRoom !== room) tourRoom.addRaw('<div class="infobox"><a href="/' + room.id + '" class="ilink"><strong>' + Chat.escapeHTML(Dex.getFormat(tour.format).name) + '</strong> tournament created in <strong>' + Chat.escapeHTML(room.title) + '</strong>.</a></div>').update();
+            }
+        }
+    } else {
+        let tournament = getTournament(room.id);
+        if (!tournament) {
+            return this.sendReply("There is currently no tournament running in this room.");
+        }
+ 
+        let commandHandler = null;
+        if (commands.basic[cmd]) {
+            commandHandler = typeof commands.basic[cmd] === 'string' ? commands.basic[commands.basic[cmd]] : commands.basic[cmd];
+        }
+ 
+        if (commands.creation[cmd]) {
+            if (room.toursEnabled === true) {
+                if (!this.can('tournaments', null, room)) return;
+            } else if (room.toursEnabled === '%') {
+                if (!this.can('tournamentsmoderation', null, room)) return;
+            } else {
+                if (!user.can('tournamentsmanagement', null, room)) {
+                    return this.errorReply("Tournaments are disabled in this room (" + room.id + ").");
+                }
+            }
+            commandHandler = typeof commands.creation[cmd] === 'string' ? commands.creation[commands.creation[cmd]] : commands.creation[cmd];
+        }
+ 
+        if (commands.moderation[cmd]) {
+            if (!user.can('tournamentsmoderation', null, room)) {
+                return this.errorReply(cmd + " -  Access denied.");
+            }
+            commandHandler = typeof commands.moderation[cmd] === 'string' ? commands.moderation[commands.moderation[cmd]] : commands.moderation[cmd];
+        }
+ 
+        if (!commandHandler) {
+            this.errorReply(cmd + " is not a tournament command.");
+        } else {
+            commandHandler.call(this, tournament, user, params, cmd, connection);
+        }
+    }
+};
 	tournamenthelp() {
 		if (!this.runBroadcast()) return;
 		this.sendReplyBox(
