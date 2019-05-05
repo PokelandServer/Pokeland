@@ -731,7 +731,7 @@ class Tournament {
 	}
 	cancelChallenge(user, output) {
 		if (!this.isTournamentStarted) {
-			output.sendRoom('|tournament|error|NotStarted');
+			output.sendReply('|tournament|error|NotStarted');
 			return;
 		}
 
