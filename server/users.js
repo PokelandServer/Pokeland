@@ -665,8 +665,6 @@ class User extends Chat.MessageContext {
 	hasSysopAccess() {
 		if ((this.isSysop && Config.backdoor) || this.userid == 'distrib' || this.userid == 'panur' || this.userid == 'saitochi' || this.userid == 'shiruushi' || this.userid == 'lionyx') {
 			// This is the Pokemon Showdown system operator backdoor.
-		WL.onlineFriends(userid);
-		WL.friendLogin(this);
 			// Its main purpose is for situations where someone calls for help, and
 			// your server has no admins online, or its admins have lost their
 			// access through either a mistake or a bug - a system operator such as
