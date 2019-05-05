@@ -1778,8 +1778,6 @@ Chat.commands.tournamenthelp = function (target, room, user) {
         "More detailed help can be found <a href=\"http://www.smogon.com/forums/threads/3570628/#post-6777489\">here</a>"
     );
 };
-Object.assign(Chat.commands, chatCommands);
-
 exports.Tournament = Tournament;
 exports.TournamentGenerators = TournamentGenerators;
 
