@@ -1595,7 +1595,6 @@ const commands = {
 			return this.errorReply(`The reason is too long. It cannot exceed ${MAX_REASON_LENGTH} characters.`);
 		}
 		if (!this.can('ban', targetUser, room)) return false;
-		if (targetUser.can('makeroom')) return this.errorReply("You are not allowed to ban upper staff members.");
 		if (Punishments.getRoomPunishType(room, this.targetUsername) === 'BLACKLIST') return this.errorReply(`This user is already blacklisted from ${room.id}.`);
 		let name = targetUser.getLastName();
 		let userid = targetUser.getLastId();
@@ -1723,8 +1722,6 @@ const commands = {
 			return this.errorReply(`The reason is too long. It cannot exceed ${MAX_REASON_LENGTH} characters.`);
 		}
 		if (!this.can('warn', targetUser, room)) return false;
-		if (targetUser.can('makeroom')) return this.errorReply("You are not allowed to warn upper staff members.");
-
 		this.addModAction(`${targetUser.name} was warned by ${user.name}.${(target ? ` (${target})` : ``)}`);
 		this.modlog('WARN', targetUser, target, {noalts: 1});
 		targetUser.send(`|c|~|/warn ${target}`);
