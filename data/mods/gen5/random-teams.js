@@ -263,6 +263,9 @@ class RandomGen5Teams extends RandomGen6Teams {
 				case 'endeavor':
 					if (slot > 0) rejected = true;
 					break;
+				case 'judgment':
+					if (counter.setupType !== 'Special' && counter.stab > 1) rejected = true;
+					break;
 				case 'return':
 					if (hasMove['bodyslam'] || hasMove['facade'] || hasMove['doubleedge'] || hasMove['tailslap']) rejected = true;
 					break;
@@ -355,7 +358,7 @@ class RandomGen5Teams extends RandomGen6Teams {
 					(hasAbility['Guts'] && hasType['Normal'] && movePool.includes('facade')) ||
 					(hasAbility['Slow Start'] && movePool.includes('substitute')) ||
 					(!counter.recovery && (movePool.includes('softboiled') || template.nfe && !!counter['Status'] && (movePool.includes('recover') || movePool.includes('roost')))) ||
-					(template.requiredMove && movePool.includes(toId(template.requiredMove)))))) {
+					(template.requiredMove && movePool.includes(toID(template.requiredMove)))))) {
 					// Reject Status or non-STAB
 					if (!isSetup && !move.weather && !move.damage && !move.heal && moveid !== 'judgment' && moveid !== 'rest' && moveid !== 'sleeptalk') {
 						if (move.category === 'Status' || !hasType[move.type] || move.selfSwitch || move.basePower && move.basePower < 40 && !move.multihit) rejected = true;
@@ -418,7 +421,7 @@ class RandomGen5Teams extends RandomGen6Teams {
 				if (counterAbilities.includes(ability)) {
 					// Adaptability, Contrary, Hustle, Iron Fist, Skill Link
 					// @ts-ignore
-					rejectAbility = !counter[toId(ability)];
+					rejectAbility = !counter[toID(ability)];
 				} else if (ability === 'Blaze') {
 					rejectAbility = !counter['Fire'];
 				} else if (ability === 'Chlorophyll') {
@@ -707,7 +710,7 @@ class RandomGen5Teams extends RandomGen6Teams {
 			// Limit two Pokemon per tier
 			if (!tierCount[tier]) {
 				tierCount[tier] = 1;
-			} else if (tierCount[tier] > 1) {
+			} else if (tierCount[tier] > 1 && this.gen === 5) {
 				continue;
 			}
 

@@ -36,8 +36,12 @@ let BattleStatuses = {
 		id: 'slp',
 		num: 0,
 		effectType: 'Status',
-		onStart(target) {
-			this.add('-status', target, 'slp');
+		onStart(target, source, sourceEffect) {
+			if (sourceEffect && sourceEffect.effectType === 'Move') {
+				this.add('-status', target, 'slp', '[from] move: ' + sourceEffect.name);
+			} else {
+				this.add('-status', target, 'slp');
+			}
 			// 1-6 turns
 			this.effectData.time = this.random(2, 8);
 		},
@@ -111,7 +115,7 @@ let BattleStatuses = {
 		},
 		onSwitchIn(pokemon) {
 			// Regular poison status and damage after a switchout -> switchin.
-			pokemon.setStatus('psn');
+			pokemon.status = /** @type {ID} */('psn');
 		},
 		onAfterSwitchInSelf(pokemon) {
 			this.damage(this.clampIntRange(Math.floor(pokemon.maxhp / 16), 1));
@@ -150,6 +154,7 @@ let BattleStatuses = {
 				isSelfHit: true,
 				noDamageVariance: true,
 				flags: {},
+				selfdestruct: move.selfdestruct,
 			});
 			let damage = this.getDamage(pokemon, pokemon, move);
 			if (typeof damage !== 'number') throw new Error("Confusion damage not dealt");

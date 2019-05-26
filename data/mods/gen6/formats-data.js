@@ -40,7 +40,7 @@ let BattleFormatsData = {
 	},
 	charizard: {
 		inherit: true,
-		randomBattleMoves: ["fireblast", "airslash", "focusblast", "roost", "swordsdance", "flareblitz", "acrobatics", "earthquake", "willowisp"],
+		randomBattleMoves: ["fireblast", "airslash", "roost", "swordsdance", "flareblitz", "acrobatics", "earthquake", "willowisp"],
 		randomDoubleBattleMoves: ["heatwave", "fireblast", "airslash", "overheat", "dragonpulse", "roost", "tailwind", "protect"],
 		tier: "NU",
 		doublesTier: "(DUU)",
@@ -2726,7 +2726,7 @@ let BattleFormatsData = {
 		doublesTier: "DUber",
 	},
 	kyogreprimal: {
-		randomBattleMoves: ["calmmind", "waterspout", "originpulse", "scald", "thunder", "icebeam", "rest", "sleeptalk"],
+		randomBattleMoves: ["calmmind", "originpulse", "scald", "thunder", "icebeam", "toxic", "rest", "sleeptalk"],
 		randomDoubleBattleMoves: ["waterspout", "originpulse", "muddywater", "thunder", "icebeam", "calmmind", "rest", "sleeptalk", "protect"],
 		requiredItem: "Blue Orb",
 	},
@@ -3223,8 +3223,8 @@ let BattleFormatsData = {
 	},
 	azelf: {
 		inherit: true,
-		randomBattleMoves: ["nastyplot", "psyshock", "fireblast", "dazzlinggleam", "stealthrock", "knockoff", "taunt", "explosion", "uturn"],
-		randomDoubleBattleMoves: ["nastyplot", "psychic", "fireblast", "thunderbolt", "icepunch", "knockoff", "zenheadbutt", "uturn", "trick", "taunt", "protect", "dazzlinggleam"],
+		randomBattleMoves: ["nastyplot", "psyshock", "fireblast", "dazzlinggleam", "stealthrock", "knockoff", "taunt", "explosion"],
+		randomDoubleBattleMoves: ["nastyplot", "psychic", "fireblast", "thunderbolt", "icepunch", "knockoff", "zenheadbutt", "uturn", "taunt", "protect", "dazzlinggleam"],
 		tier: "OU",
 		doublesTier: "(DUU)",
 	},
@@ -3307,8 +3307,8 @@ let BattleFormatsData = {
 		doublesTier: "(DUU)",
 	},
 	shayminsky: {
-		randomBattleMoves: ["seedflare", "earthpower", "airslash", "hiddenpowerfire", "substitute", "leechseed", "healingwish"],
-		randomDoubleBattleMoves: ["seedflare", "earthpower", "airslash", "hiddenpowerfire", "rest", "substitute", "leechseed", "tailwind", "protect", "hiddenpowerice"],
+		randomBattleMoves: ["seedflare", "earthpower", "airslash", "hiddenpowerice", "substitute", "leechseed", "healingwish"],
+		randomDoubleBattleMoves: ["seedflare", "earthpower", "airslash", "rest", "substitute", "leechseed", "tailwind", "protect", "hiddenpowerice"],
 		eventOnly: true,
 		tier: "Uber",
 		doublesTier: "DUber",
@@ -4149,7 +4149,7 @@ let BattleFormatsData = {
 	},
 	mandibuzz: {
 		inherit: true,
-		randomBattleMoves: ["foulplay", "knockoff", "roost", "taunt", "whirlwind", "toxic", "uturn", "bravebird", "defog"],
+		randomBattleMoves: ["foulplay", "bravebird", "roost", "taunt", "toxic", "uturn", "defog"],
 		randomDoubleBattleMoves: ["knockoff", "roost", "taunt", "tailwind", "snarl", "uturn", "bravebird", "protect"],
 		tier: "UU",
 		doublesTier: "(DUU)",
@@ -4202,7 +4202,7 @@ let BattleFormatsData = {
 	},
 	terrakion: {
 		inherit: true,
-		randomBattleMoves: ["stoneedge", "closecombat", "swordsdance", "substitute", "stealthrock", "earthquake"],
+		randomBattleMoves: ["swordsdance", "closecombat", "stoneedge", "earthquake", "substitute"],
 		randomDoubleBattleMoves: ["stoneedge", "closecombat", "substitute", "rockslide", "earthquake", "protect"],
 		tier: "UUBL",
 		doublesTier: "DOU",
@@ -4525,7 +4525,7 @@ let BattleFormatsData = {
 		tier: "LC Uber",
 	},
 	slurpuff: {
-		randomBattleMoves: ["substitute", "bellydrum", "playrough", "return", "drainpunch", "calmmind", "drainingkiss", "dazzlinggleam", "flamethrower", "surf"],
+		randomBattleMoves: ["substitute", "bellydrum", "playrough", "return", "drainpunch", "calmmind", "dazzlinggleam", "flamethrower", "surf"],
 		randomDoubleBattleMoves: ["substitute", "bellydrum", "playrough", "return", "drainpunch", "dazzlinggleam", "surf", "psychic", "flamethrower", "protect"],
 		tier: "RUBL",
 		doublesTier: "(DUU)",
@@ -4578,7 +4578,7 @@ let BattleFormatsData = {
 	},
 	heliolisk: {
 		randomBattleMoves: ["raindance", "thunder", "hypervoice", "surf", "darkpulse", "hiddenpowerice", "voltswitch", "thunderbolt"],
-		randomDoubleBattleMoves: ["surf", "voltswitch", "hiddenpowerice", "raindance", "thunder", "darkpulse", "thunderbolt", "electricterrain", "protect"],
+		randomDoubleBattleMoves: ["surf", "voltswitch", "hiddenpowerice", "raindance", "thunder", "darkpulse", "thunderbolt", "protect"],
 		tier: "UU",
 		doublesTier: "(DUU)",
 	},
@@ -4595,7 +4595,7 @@ let BattleFormatsData = {
 	},
 	amaura: {
 		inherit: true,
-		randomBattleMoves: ["naturepower", "hypervoice", "ancientpower", "thunderbolt", "darkpulse", "thunderwave", "dragontail", "flashcannon"],
+		randomBattleMoves: ["hypervoice", "ancientpower", "thunderbolt", "darkpulse", "thunderwave", "dragontail", "flashcannon"],
 		tier: "LC",
 	},
 	aurorus: {
