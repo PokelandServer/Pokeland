@@ -12,11 +12,11 @@ exports.commands = {
 		if (!targetUser) return this.sendReply('User "' + this.targetUsername + '" Introuvable.');
 
 		if ((room.isMuted(targetUser) && !canBeMutedFurther) || targetUser.locked || !targetUser.connected) {
-			var problem = " Mais était déjà " + (!targetUser.connected ? "déconnecter" : targetUser.locked ? "locked" : "licked");
+			var problem = " Mais était déjà " + (!targetUser.connected ? "déconnecté" : targetUser.locked ? "locked" : "licked");
 			if (!target) {
-				return this.privateModCommand("(" + targetUser.name + " Vous avez était mute par" + user.name + problem + ".)");
+				return this.privateModCommand("(" + targetUser.name + " Vous avez été mute par" + user.name + problem + ".)");
 			}
-			return this.addModCommand("" + targetUser.name + " Vous avez était mute par" + user.name + problem + "." + (target ? " (" + target + ")" : ""));
+			return this.addModCommand("" + targetUser.name + " Vous avez été mute par" + user.name + problem + "." + (target ? " (" + target + ")" : ""));
 		}
 
 		targetUser.popup(user.name + 'Vous a mute pendant 24 heures. ' + target);
