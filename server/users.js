@@ -912,15 +912,7 @@ class User extends Chat.MessageContext {
 			this.destroy();
 
 			Punishments.checkName(user, userid, registered);
-			WL.giveDailyReward(user);
-
-			if ((new Date()).getDay() == 8) {
-				let usersbadge = Db('badges').has(userid) ? Db('badges').get(userid) : [];
-				if (usersbadge.indexOf("2ans") == -1) {
-					usersbadge.push("2ans");
-					Db('badges').set(userid, usersbadge);
-				}
-			}			
+			WL.giveDailyReward(user);		
 			
 			Rooms.global.checkAutojoin(user);
 			Chat.loginfilter(user, this, userType);
