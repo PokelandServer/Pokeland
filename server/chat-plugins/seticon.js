@@ -2,7 +2,7 @@
 * Icons for Pokemon Showdown  *
 * Credits: Lord Haji, panpawn.*
 *******************************/
-"use strict";
+/*"use strict";
 
 const FS = require("C:/Users/Administrator/Desktop/Pokemon-Showdown-master/lib/fs.js");
 
@@ -16,18 +16,18 @@ if (iconsData) {
 function updateIcons() {
 	FS("config/icons.json").writeUpdate(() => (
 		JSON.stringify(icons)
-	));
+	));*/
 
-	let newCss = "/* ICONS START */\n";
+	//let newCss = "/* ICONS START */\n";
 
-	for (let name in icons) {
-		newCss += generateCSS(name, icons[name]);
-	}
-	newCss += "/* ICONS END */\n";
+	//for (let name in icons) {
+	//	newCss += generateCSS(name, icons[name]);
+	//}
+	//newCss += "/* ICONS END */\n";
 
-	let file = FS("config/custom.css").readIfExistsSync().split("\n");
-	if (file.includes("/* ICONS START */")) file.splice(file.indexOf("/* ICONS START */"), (file.indexOf("/* ICONS END */") - file.indexOf("/* ICONS START */")) + 1);
-	FS("config/custom.css").writeUpdate(() => (
+	//let file = FS("config/custom.css").readIfExistsSync().split("\n");
+	//if (file.includes("/* ICONS START */")) file.splice(file.indexOf("/* ICONS START */"), (file.indexOf("/* ICONS END */") - file.indexOf("/* ICONS START */")) + 1);
+	/*FS("config/custom.css").writeUpdate(() => (
 		file.join("\n") + newCss
 	));
 	WL.reloadCSS();
@@ -86,4 +86,4 @@ exports.commands = {
 		"/icon set [user], [image url] - Gives [user] an icon of [image url]",
 		"/icon delete [user] - Deletes a user's icon",
 	],
-};
+};*/
