@@ -288,6 +288,10 @@ if (typeof demFeels.extendEmotes === 'function') {
 	':mdr:' : 'https://cdn.discordapp.com/emojis/407618759637860352.png?v=1',
 	':nomnom:' : 'https://image.noelshack.com/fichiers/2019/18/4/1556823485-tenor.gif',
 	'feelsclown' : 'https://static-cdn.jtvnw.net/emoticons/v1/300213026/1.0',
+	':badass:' : 'https://image.noelshack.com/fichiers-md/2019/24/1/1560175509-badass.gif',
+	':bella:' : 'https://image.noelshack.com/fichiers-md/2019/24/1/1560176496-bella.gif',
+	':evil:' : 'https://image.noelshack.com/fichiers/2019/24/1/1560177096-evil.gif',
+		
 
 	});
 }
