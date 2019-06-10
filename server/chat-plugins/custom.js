@@ -294,7 +294,7 @@ bonus: 'dailybonus',
 	live: function (target, room, user) {
 		if (!this.runBroadcast()) return;
 		this.sendReplyBox(
-'<img src="https://image.noelshack.com/fichiers/2019/15/7/1555254055-semainier-distrib-vextal.png" width="520" height="290">'
+'<center><a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vRrdUaCaBenIy5n8YgwM5pfz0SrcX-6xRaPoyVaPYdEvOP-8nbW-f9Ka40Z0nUDbnJdcYYhieK8jA80/pubhtml" target="_blank" rel="noopener"><button class="distrib-button"><h1>Planning Live</h1></button></a></center>'
 		);
 	},
 		'!galeries': true,
