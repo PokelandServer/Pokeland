@@ -165,7 +165,7 @@ bonus: 'dailybonus',
 					discord: function (target, room, user) {
 		if (!this.canBroadcast()) return;
 		this.sendReplyBox(
-'<a href="https://discord.gg/ZZmT65N">Discord de Pokeland</a> '
+'<a href="https://discord.gg/sQgj8ej">Discord de Pokeland</a> '
 		);
 	},
 	kickall: function (target, room, user) {
