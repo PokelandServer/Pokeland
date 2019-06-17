@@ -111,7 +111,7 @@ exports.commands = {
 
 	masspm: 'pmall',
 	pmall: function (target, room, user) {
-		if (!this.can('pmall')) return false;
+		if (!this.can('givemoney')) return false;
 		if (!target) return this.parse('/help pmall');
 
 		let pmName = ' Server PM [Do not reply]';
@@ -126,7 +126,7 @@ exports.commands = {
 	staffpm: 'pmallstaff',
 	pmstaff: 'pmallstaff',
 	pmallstaff: function (target, room, user) {
-		if (!this.can('forcewin')) return false;
+		if (!this.can('givemoney')) return false;
 		if (!target) return this.parse('/help pmallstaff');
 
 		let pmName = ' Staff PM [Do not reply]';
