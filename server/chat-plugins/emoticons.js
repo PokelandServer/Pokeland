@@ -291,8 +291,10 @@ if (typeof demFeels.extendEmotes === 'function') {
 	':badass:' : 'https://image.noelshack.com/fichiers-md/2019/24/1/1560175509-badass.gif',
 	':bella:' : 'https://image.noelshack.com/fichiers-md/2019/24/1/1560176496-bella.gif',
 	':evil:' : 'https://image.noelshack.com/fichiers/2019/24/1/1560177096-evil.gif',
+	':thierry:' : 'https://cdn.discordapp.com/attachments/505474399638388746/596092182901817347/thierry.png',
+	':thierryrire:' : 'https://cdn.discordapp.com/attachments/505474399638388746/596091375536308277/thierryrire.png',	
+	
 		
-
 	});
 }
 
