@@ -293,8 +293,15 @@ if (typeof demFeels.extendEmotes === 'function') {
 	':evil:' : 'https://image.noelshack.com/fichiers/2019/24/1/1560177096-evil.gif',
 	':thierry:' : 'https://cdn.discordapp.com/attachments/505474399638388746/596092182901817347/thierry.png',
 	':thierryrire:' : 'https://cdn.discordapp.com/attachments/505474399638388746/596091375536308277/thierryrire.png',	
+	'jerrygaulet' : 'https://image.noelshack.com/fichiers/2019/28/6/1563055016-jerry-gaulet-v3.png',
+	'mybodyisready' : 'https://image.noelshack.com/fichiers/2019/28/7/1563056184-4295945764966236162.png',
+	'nopepls' : 'https://image.noelshack.com/fichiers/2019/28/6/1563053427-3101521929528934402.png',
+	'yespls' : 'https://image.noelshack.com/fichiers/2019/28/7/1563055990-4054604227752755292.png',
+	'incroyable' : 'https://image.noelshack.com/fichiers/2019/28/7/1563055725-3623235312264151162.png',
+	'Thug' : 'https://image.noelshack.com/fichiers/2019/28/7/1563055882-3220757495847321602.png',
+	'MAIS' : 'https://image.noelshack.com/fichiers/2019/28/7/1563056099-3955472405020016642.png',
+	'HAXX' : 'https://image.noelshack.com/fichiers/2019/29/1/1563199218-lago-079400020840-b-c-z.png',
 	
-		
 	});
 }
 
